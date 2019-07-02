@@ -1,5 +1,6 @@
 {
     "name": "bitmyth/tooling",
+	"description": "PHP tooling scripts",
 	"license": "MIT",
     "authors": [
         {
