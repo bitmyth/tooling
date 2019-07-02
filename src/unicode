@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+if (version_compare('5.6.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'This version of Tooling is supported on PHP 5.6 and PHP 7.*.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+    die(1);
+}
+
+if($argc<2)die('required charater'.PHP_EOL);
+
+$text=$argv[1];
+if(is_file($text)) $text=file_get_contents($text);
+$words = array_filter(explode('\u',$text));
+
+$str="";
+foreach($words as $char){
+	// $nibbles=str_split($char,2);
+    // echo mb_chr($nibbles[0]<<8|$nibbles[1]);
+
+	$b=hexdec($char);
+	$str.=pack('C3',bindec(1110) << 4 | $b>>12 & 0xf , bindec(10)<<6 | ($b>>6 & 0xff>>2),  bindec(10)<<6 | $b & 0xff>>2);
+}
+
+echo green($str).PHP_EOL;
+
+function info($str){
+	return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str){
+	return "\033[33m$str\033[\0m ";
+}
+
+function green($str){
+	return "\033[32m$str\033[\0m";
+}

@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+
+if (version_compare('5.6.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'This version of Tooling is supported on PHP 5.6 and PHP 7.*.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'PRC');
+}
+
+if($argc<2)die('required charater'.PHP_EOL);
+
+$text=$argv[1];
+if(is_file($text)) $text=file_get_contents($text);
+$words = preg_split('/(?<!^)(?!$)/u', $text );
+
+foreach($words as $char){
+	echo info('Unicode codepoint(dec) '.$char) . yellow(ordinal($char)).PHP_EOL;
+	echo info('Unicode codepoint(hex) '.$char) . yellow(dechex(ordinal($char))).PHP_EOL;
+
+	$url='http://unicode.scarfboy.com/?s=U+';
+	echo green('See: ' . $url . dechex(ordinal($char))).PHP_EOL;
+}
+
+function ordinal($str){
+	$charString = mb_substr($str, 0, 1, 'utf-8');
+	$size = strlen($charString);        
+	$ordinal = ord($charString[0]) & (0xFF >> $size);
+
+	//Merge other characters into the value
+	for($i = 1; $i < $size; $i++){
+		$ordinal = $ordinal << 6 | (ord($charString[$i]) & 127);
+	}
+	return $ordinal;
+}
+
+function info($str){
+	return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str){
+	return "\033[33m$str\033[\0m ";
+}
+
+function green($str){
+	return "\033[32m$str\033[\0m ";
+}
