@@ -1,0 +1,51 @@
+#!/usr/bin/env php
+<?php
+if ($argc == 2) {
+    $url = $argv[1];
+} else {
+    info("Input url:");
+    $url = fgets(STDIN);
+}
+
+$decoded = urldecode($url);
+
+warn($decoded);
+
+parse_str(parse_url($url, PHP_URL_QUERY), $a);
+
+foreach ($a as $k => $v) {
+    info($k, false);
+    success($v);
+}
+
+
+function info($str, $n = true)
+{
+    echo blue($str);
+    echo $n ? PHP_EOL : '';
+}
+
+function success($str)
+{
+    echo green($str) . PHP_EOL;
+}
+
+function warn($str)
+{
+    echo yellow($str) . PHP_EOL;
+}
+
+function blue($str)
+{
+    return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+    return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+    return "\033[32m$str\033[\0m ";
+}

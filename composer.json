@@ -13,7 +13,8 @@
 	},
 	"bin": [
 		"src/uord",
-		"src/unicode"
+		"src/unicode",
+		"src/parse-query-string"
 	],
 	"autoload":{
 		"psr-4":{
