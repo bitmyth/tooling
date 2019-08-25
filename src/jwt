@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+
+<?php
+
+if ($argc == 2) {
+    $jwt = $argv[1];
+} else {
+    info("Input url:");
+    $jwt = fgets(STDIN);
+}
+
+$header = ['HEADER:ALGORITHM & TOKEN TYPE', 'PAYLOAD', 'SIGNATURE'];
+
+foreach (explode('.', $jwt) as $k => $v) {
+    info($header[$k]);
+    success(base64_decode($v));
+}
+
+function info($str, $n = true)
+{
+    echo blue($str);
+    echo $n ? PHP_EOL : '';
+}
+
+function success($str)
+{
+    echo green($str) . PHP_EOL;
+}
+
+function warn($str)
+{
+    echo yellow($str) . PHP_EOL;
+}
+
+function blue($str)
+{
+    return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+    return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+    return "\033[32m$str\033[\0m ";
+}

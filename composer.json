@@ -1,24 +1,25 @@
 {
-    "name": "bitmyth/tooling",
-	"description": "PHP tooling scripts",
-	"license": "MIT",
-    "authors": [
-        {
-            "name": "gsh",
-            "email": "bitmyth@outlook.com"
-        }
-    ],
-	"require": {
-		"php":">=5.6"
-	},
-	"bin": [
-		"src/uord",
-		"src/unicode",
-		"src/parse-query-string"
-	],
-	"autoload":{
-		"psr-4":{
-			"Bitmyth\\":"src"
-		}
-	}
+  "name": "bitmyth/tooling",
+  "description": "PHP tooling scripts",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "gsh",
+      "email": "bitmyth@outlook.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6"
+  },
+  "bin": [
+    "src/uord",
+    "src/unicode",
+    "src/parse-query-string",
+    "src/jwt"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Bitmyth\\": "src"
+    }
+  }
 }
