@@ -5,7 +5,7 @@
 if ($argc == 2) {
     $jwt = $argv[1];
 } else {
-    info("Input url:");
+    info("Input JWT:");
     $jwt = fgets(STDIN);
 }
 
