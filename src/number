@@ -1,0 +1,79 @@
+#!/usr/bin/env php
+<?php
+if ($argc == 2) {
+    $number = $argv[1];
+} else {
+    info("Input number:");
+    $number = trim(fgets(STDIN));
+}
+
+const Wan = 1e4;
+const Yi = 1e8;
+
+$formatted = format($number);
+info($formatted);
+
+
+function format($number)
+{
+    $result = [];
+    switch ($number) {
+        case $number > Yi:
+            $result[] = [
+                'unit' => '亿',
+                'quantity' => intval($number / Yi)
+            ];
+        case $number > Wan:
+            $result[] = [
+                'unit' => '万',
+                'quantity' => intval($number % Yi / Wan)
+            ];
+        case $number > 0:
+            $point = strrpos($number, '.');
+            if ($point) {
+                $number = substr($number, $point - 4);
+            } else {
+                $number = substr($number, -4);
+            }
+            $result[] = [
+                'unit' => '',
+                'quantity' => $number
+            ];
+    }
+
+    return array_reduce($result, function ($carry, $item) {
+        $carry .= $item['quantity'] . $item['unit'];
+        return $carry;
+    });
+}
+
+function info($str, $n = true)
+{
+    echo blue($str);
+    echo $n ? PHP_EOL : '';
+}
+
+function success($str)
+{
+    echo green($str) . PHP_EOL;
+}
+
+function warn($str)
+{
+    echo yellow($str) . PHP_EOL;
+}
+
+function blue($str)
+{
+    return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+    return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+    return "\033[32m$str\033[\0m ";
+}
