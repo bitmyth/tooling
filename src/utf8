@@ -22,7 +22,7 @@ $words = array_filter(explode(',', $text));
 
 $str = "";
 foreach ($words as $word) {
-    $str .= utf8($words);
+    $str .= utf8(intval($word));
 }
 
 function utf8($b)
