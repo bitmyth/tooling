@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+if (version_compare('5.6.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'This version of Tooling is supported on PHP 5.6 and PHP 7.*.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+    die(1);
+}
+
+if ($argc < 2) die('required character int' . PHP_EOL);
+
+$text = $argv[1];
+
+if (is_file($text)) $text = file_get_contents($text);
+$words = array_filter(explode(',', $text));
+
+$str = "";
+foreach ($words as $word) {
+    $str .= utf8($words);
+}
+
+function utf8($b)
+{
+    if ($b < 128) {
+        $utf8 = $b;
+    } else if (($b > 127) && ($b < 2048)) {
+        $utf8 = pack('C2', bindec(110) << 5 | $b >> 6, bindec(10) << 6 | $b & 0xf);
+    } else {
+        $utf8 = pack('C3', bindec(1110) << 4 | $b >> 12, bindec(10) << 6 | ($b >> 6 & 0xff >> 2), bindec(10) << 6 | $b & 0xff >> 2);
+    }
+    return $utf8;
+}
+
+echo green($str) . PHP_EOL;
+
+function info($str)
+{
+    return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+    return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+    return "\033[32m$str\033[\0m";
+}

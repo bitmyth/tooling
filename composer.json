@@ -16,7 +16,8 @@
     "src/unicode",
     "src/parse-query-string",
     "src/jwt",
-    "src/number"
+    "src/number",
+    "src/utf8"
   ],
   "autoload": {
     "psr-4": {
