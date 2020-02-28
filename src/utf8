@@ -45,7 +45,7 @@ foreach ($words as $word) {
 function utf8($b)
 {
     if ($b < 128) {
-        $utf8 = $b;
+        $utf8 = pack('C', $b);
     } else if (($b > 127) && ($b < 2048)) {
         $utf8 = pack('C2', bindec(110) << 5 | $b >> 6, bindec(10) << 6 | $b & 0xf);
     } else {
