@@ -1,0 +1,54 @@
+#!/usr/bin/env php
+<?php
+if ($argc == 2) {
+    $str = $argv[1];
+} else {
+	info("Input string:");
+    $str = trim(fgets(STDIN));
+}
+
+$formatted = '\x'.implode('\x',getBytes($str));
+info($formatted);
+
+
+function getBytes($str, $isBinaryData = true)
+{
+	$bytes = array();
+	for ($i = 0; $i < strlen($str); $i++) {
+		if (!$isBinaryData)
+			$str[$i] = pack('C', ord($str[$i]));//format 参数 C - unsigned char
+		$bytes[] = bin2hex($str[$i]);
+	}
+	return $bytes;
+}
+
+function info($str, $n = true)
+{
+	echo blue($str);
+	echo $n ? PHP_EOL : '';
+}
+
+function success($str)
+{
+	echo green($str) . PHP_EOL;
+}
+
+function warn($str)
+{
+	echo yellow($str) . PHP_EOL;
+}
+
+function blue($str)
+{
+	return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+	return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+	return "\033[32m$str\033[\0m ";
+}
