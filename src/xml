@@ -1,0 +1,79 @@
+#!/usr/bin/env php
+
+<?php
+
+use Illuminate\Support\Facades\Log;
+use XML_Unserializer;
+
+if ($argc == 2) {
+    $xml = $argv[1];
+} else {
+    info("Input XML:");
+    $xml = fgets(STDIN);
+}
+
+$option = [
+    'complexType' => 'array'
+];
+
+$unserializer = new XML_Unserializer($option);
+
+$status = $unserializer->unserialize($xml);
+
+if (PEAR::isError($status)) {
+    Log::error('XML Error: ' . $status->getMessage());
+} else {
+    $body = $unserializer->getUnserializedData();
+
+    info(toXML($body));
+}
+
+function toXML($data)
+{
+    $xmlSerializerOptions = [
+        'indent' => '    ',
+        'rootAttributes' => ['header' => 100, 'version' => 100, 'security' => 'none', 'lang' => 'chs', 'trnCode' => '']
+    ];
+
+    $serializer = new XML_Serializer($xmlSerializerOptions);
+
+    $result = $serializer->serialize($data);
+
+    if ($result === true) {
+        $xml = $serializer->getSerializedData();
+        return PHP_EOL . $xml;
+    } else {
+        return '';
+    }
+}
+
+function info($str, $n = true)
+{
+    echo blue($str);
+    echo $n ? PHP_EOL : '';
+}
+
+function success($str)
+{
+    echo green($str) . PHP_EOL;
+}
+
+function warn($str)
+{
+    echo yellow($str) . PHP_EOL;
+}
+
+function blue($str)
+{
+    return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+    return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+    return "\033[32m$str\033[\0m ";
+}
