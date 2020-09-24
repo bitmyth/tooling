@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+if ($argc == 2) {
+    $time = $argv[1];
+} else {
+	info("Convert epoch to human-readable date, Input epoch time:");
+    $time = trim(fgets(STDIN));
+}
+
+$formatted = format($time);
+info($formatted);
+
+
+function format($time)
+{
+    return date('Y-m-d H:i:s',$time);
+}
+
+function info($str, $n = true)
+{
+    echo blue($str);
+    echo $n ? PHP_EOL : '';
+}
+
+function success($str)
+{
+    echo green($str) . PHP_EOL;
+}
+
+function warn($str)
+{
+    echo yellow($str) . PHP_EOL;
+}
+
+function blue($str)
+{
+    return "\033[34m$str\033[\0m ";
+}
+
+function yellow($str)
+{
+    return "\033[33m$str\033[\0m ";
+}
+
+function green($str)
+{
+    return "\033[32m$str\033[\0m ";
+}
