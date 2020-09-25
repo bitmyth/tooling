@@ -19,7 +19,9 @@
     "src/number",
     "src/utf8",
     "src/epoch",
-    "src/binary"
+    "src/binary",
+    "src/number",
+    "src/xml"
   ],
   "autoload": {
     "psr-4": {
