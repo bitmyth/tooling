@@ -22,10 +22,22 @@ $words = array_filter(explode('\u',$text));
 $str="";
 foreach($words as $char){
 	// $nibbles=str_split($char,2);
-    // echo mb_chr($nibbles[0]<<8|$nibbles[1]);
+	// echo mb_chr($nibbles[0]<<8|$nibbles[1]);
 
-	$b=hexdec($char);
-	$str.=pack('C3',bindec(1110) << 4 | $b>>12 & 0xf , bindec(10)<<6 | ($b>>6 & 0xff>>2),  bindec(10)<<6 | $b & 0xff>>2);
+	$b = hexdec($char);
+	if($b >= hexdec('10000')){
+		$format='C4';
+		$str.=pack($format,bindec(11110) << 3 | $b>>18 & 0xf , bindec(10)<<6 | ($b>>12 & 0xff>>2),  bindec(10)<<6 | $b >> 6 & 0xff>>2,bindec(10)<<6 | $b & 0xff>>2);
+	} else if($b >= hexdec('800')){
+		$format='C3';
+		$str.=pack($format,bindec(1110) << 4 | $b>>12 & 0xf , bindec(10)<<6 | ($b>>6 & 0xff>>2),  bindec(10)<<6 | $b & 0xff>>2);
+	} else if($b >= hexdec('80')){
+		$format='C2';
+		$str.=pack($format,bindec(110) << 5 | $b>>6 & 0xf , bindec(10)<<6 | ($b & 0xff>>2));
+	} else {
+		$format='C1';
+		$str.=pack($format,bindec($b));
+	}
 }
 
 echo green($str).PHP_EOL;
