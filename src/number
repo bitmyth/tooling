@@ -12,6 +12,7 @@ const Yi = 1e8;
 
 $formatted = format($number);
 info($formatted);
+info(($number/1024.0/1024.0).'M');
 
 
 function format($number)
