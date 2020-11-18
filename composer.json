@@ -18,8 +18,9 @@
     "src/jwt",
     "src/number",
     "src/utf8",
-    "src/epoch"
-    "src/binary"
+    "src/epoch",
+    "src/binary",
+    "src/bytes"
   ],
   "autoload": {
     "psr-4": {
